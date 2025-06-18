@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { AddProductModal } from './add-product-modal'
 import { Search, Plus, Edit, Trash2, AlertTriangle } from 'lucide-react'
 
 interface Product {
@@ -35,6 +36,7 @@ export function ProductList() {
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
+  const [showAddModal, setShowAddModal] = useState(false)
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -105,7 +107,7 @@ export function ProductList() {
             Manage your product inventory ({pagination.total} items)
           </p>
         </div>
-        <Button>
+        <Button onClick={() => setShowAddModal(true)}>
           <Plus className="w-4 h-4 mr-2" />
           Add Product
         </Button>
@@ -201,6 +203,12 @@ export function ProductList() {
           )}
         </CardContent>
       </Card>
+
+      <AddProductModal
+        open={showAddModal}
+        onOpenChange={setShowAddModal}
+        onProductAdded={() => fetchProducts(currentPage, search)}
+      />
     </div>
   )
 }
